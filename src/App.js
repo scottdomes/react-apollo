@@ -11,6 +11,12 @@ const GET_USER = gql`
       last_name
       phone
       id
+      addresses {
+        street
+        city
+        state
+        country
+      }
     }
   }
 `;

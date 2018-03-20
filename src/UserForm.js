@@ -28,6 +28,9 @@ class UserForm extends Component {
     super(props);
     this.state = {
       ...props.user,
+      newAddress: {
+        street: '',
+      },
       error: '',
     };
   }
@@ -53,8 +56,21 @@ class UserForm extends Component {
       });
   };
 
+  handleNewAddressChange = e => {
+    this.setState({
+      newAddress: { ...this.state.newAddress, [e.target.name]: e.target.value },
+    });
+  };
+
   render() {
-    const { first_name, last_name, phone, error } = this.state;
+    const {
+      first_name,
+      last_name,
+      phone,
+      error,
+      addresses,
+      newAddress,
+    } = this.state;
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormGroup>
@@ -88,6 +104,32 @@ class UserForm extends Component {
             placeholder="Your phone number..."
             value={phone}
             onChange={this.handleChange}
+          />
+        </FormGroup>
+        {addresses.map((address, i) => {
+          return (
+            <FormGroup key={address.id}>
+              <Label for={`addresss${address.id}`}>Address #{i + 1}</Label>
+              <Input
+                type="text"
+                name={`addresss[${i}].name`}
+                id={`addresss${address.id}`}
+                placeholder="Your street"
+                value={address.street}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+          );
+        })}
+        <FormGroup>
+          <Label for="new-address">Add Address:</Label>
+          <Input
+            type="text"
+            name="street"
+            id="new-address"
+            placeholder="Your street"
+            value={newAddress.street}
+            onChange={this.handleNewAddressChange}
           />
         </FormGroup>
         <p>{error.message}</p>
